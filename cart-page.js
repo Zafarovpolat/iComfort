@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Оформление заказа
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', () => {
-            alert('Функция оформления заказа в разработке');
+            window.location.href = 'checkout.html';
             // Здесь будет переход на страницу оформления
         });
     }
