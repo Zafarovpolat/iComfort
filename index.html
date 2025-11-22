@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iComfort — Официальный реселлер Apple в Узбекистане</title>
+    <title>BRANDNAME — Официальный реселлер Apple в Узбекистане</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,19 +21,34 @@
         <nav class="nav container">
             <a href="index.html" class="nav__logo"><i class='bx bxl-apple'></i></a>
             <ul class="nav__menu">
-                <li class="nav__item"><a href="#" class="nav__link">iPhone</a></li>
-                <li class="nav__item"><a href="#" class="nav__link">Mac</a></li>
-                <li class="nav__item"><a href="#" class="nav__link">iPad</a></li>
-                <li class="nav__item"><a href="#" class="nav__link">Watch</a></li>
-                <li class="nav__item"><a href="#" class="nav__link">AirPods</a></li>
-                <li class="nav__item"><a href="#" class="nav__link">Аксессуары</a></li>
+                <li class="nav__item"><a href="catalog.html?category=iphone" class="nav__link">iPhone</a></li>
+                <li class="nav__item"><a href="catalog.html?category=mac" class="nav__link">Mac</a></li>
+                <li class="nav__item"><a href="catalog.html?category=ipad" class="nav__link">iPad</a></li>
+                <li class="nav__item"><a href="catalog.html?category=watch" class="nav__link">Watch</a></li>
+                <li class="nav__item"><a href="catalog.html?category=airpods" class="nav__link">AirPods</a></li>
+                <li class="nav__item"><a href="catalog.html?category=accessories" class="nav__link">Аксессуары</a></li>
             </ul>
             <div class="nav__actions">
-                <i class='bx bx-search nav__icon'></i>
-                <i class='bx bx-shopping-bag nav__icon'></i>
+                <i class='bx bx-search nav__icon' id="search-icon"></i>
+                <div class="cart-icon-wrapper">
+                    <i class='bx bx-shopping-bag nav__icon' id="cart-icon"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </div>
                 <i class='bx bx-menu nav__toggle' id="nav-toggle"></i>
             </div>
         </nav>
+
+        <!-- Поиск -->
+        <div class="search-overlay" id="search-overlay">
+            <div class="search-container container">
+                <div class="search-input-wrapper">
+                    <i class='bx bx-search'></i>
+                    <input type="text" class="search-input" id="search-input" placeholder="Поиск товаров...">
+                    <i class='bx bx-x search-close' id="search-close"></i>
+                </div>
+                <div class="search-results" id="search-results"></div>
+            </div>
+        </div>
     </header>
 
     <main class="main">
@@ -44,8 +59,8 @@
                 <h2 class="hero__subtitle">Титановый. Прочный. Лёгкий. Про.</h2>
                 <p class="hero__price">От 14 999 000 сум</p>
                 <div class="hero__buttons">
-                    <a href="product.html" class="btn btn--primary">Купить</a>
-                    <a href="#" class="btn btn--secondary">Подробнее</a>
+                    <a href="product.html?id=iphone-15-pro" class="btn btn--primary">Купить</a>
+                    <a href="product.html?id=iphone-15-pro" class="btn btn--secondary">Подробнее</a>
                 </div>
             </div>
             <div class="hero__image-container">
@@ -54,7 +69,7 @@
             </div>
         </section>
 
-        <!-- 3. СЕКЦИЯ КЛЮЧЕВЫХ ПРЕИМУЩЕСТВ (ОБНОВЛЕННЫЙ ДИЗАЙН) -->
+        <!-- 3. СЕКЦИЯ КЛЮЧЕВЫХ ПРЕИМУЩЕСТВ -->
         <section class="features section container">
             <div class="features__grid">
                 <div class="feature-card animate-on-scroll">
@@ -115,77 +130,18 @@
             </div>
         </section>
 
-        <!-- 4. СЕКЦИЯ ПРОДУКТОВ (ОБНОВЛЕНО НА IPHONE) -->
+        <!-- 4. СЕКЦИЯ ПРОДУКТОВ -->
         <section class="products section container">
             <h2 class="section__title animate-on-scroll">Выберите свой iPhone</h2>
-            <div class="products__grid">
-                <a href="product.html" class="product-card animate-on-scroll">
-                    <div class="product-card__image-wrapper">
-                        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-naturaltitanium?wid=512&hei=480&fmt=jpeg&qlt=95&.v=1692845699233"
-                            alt="iPhone 15 Pro" class="product-card__image">
-                    </div>
-                    <h3 class="product-card__name">iPhone 15 Pro</h3>
-                    <div class="product-card__colors">
-                        <span class="color-dot" style="background: #8A857B;"></span>
-                        <span class="color-dot" style="background: #444F5A;"></span>
-                        <span class="color-dot" style="background: #E3E4E6;"></span>
-                        <span class="color-dot" style="background: #4B4B4B;"></span>
-                    </div>
-                    <p class="product-card__price">От 14 999 000 сум</p>
-                    <p class="product-card__credit">От 1 249 916 сум/мес</p>
-                </a>
-                <a href="product.html" class="product-card animate-on-scroll">
-                    <div class="product-card__image-wrapper">
-                        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=512&hei=480&fmt=jpeg&qlt=95&.v=1692923777972"
-                            alt="iPhone 15" class="product-card__image">
-                    </div>
-                    <h3 class="product-card__name">iPhone 15</h3>
-                    <div class="product-card__colors">
-                        <span class="color-dot" style="background: #A6C2DE;"></span>
-                        <span class="color-dot" style="background: #F8D4D6;"></span>
-                        <span class="color-dot" style="background: #F5E488;"></span>
-                        <span class="color-dot" style="background: #D3E5C4;"></span>
-                    </div>
-                    <p class="product-card__price">От 11 499 000 сум</p>
-                    <p class="product-card__credit">От 958 250 сум/мес</p>
-                </a>
-                <a href="product.html" class="product-card animate-on-scroll">
-                    <div class="product-card__image-wrapper">
-                        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-yellow?wid=512&hei=480&fmt=jpeg&qlt=95&.v=1676505838521"
-                            alt="iPhone 14" class="product-card__image">
-                    </div>
-                    <h3 class="product-card__name">iPhone 14</h3>
-                    <div class="product-card__colors">
-                        <span class="color-dot" style="background: #2E3642;"></span>
-                        <span class="color-dot" style="background: #F0E5D3;"></span>
-                        <span class="color-dot" style="background: #C2D5ED;"></span>
-                        <span class="color-dot" style="background: #E5DDEA;"></span>
-                    </div>
-                    <p class="product-card__price">От 9 999 000 сум</p>
-                    <p class="product-card__credit">От 833 250 сум/мес</p>
-                </a>
-                <a href="product.html" class="product-card animate-on-scroll">
-                    <div class="product-card__image-wrapper">
-                        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-se-finish-select-202207-starlight?wid=512&hei=480&fmt=jpeg&qlt=95&.v=1655312332921"
-                            alt="iPhone SE" class="product-card__image">
-                    </div>
-                    <h3 class="product-card__name">iPhone SE</h3>
-                    <div class="product-card__colors">
-                        <span class="color-dot" style="background: #2E3642;"></span>
-                        <span class="color-dot" style="background: #F0E5D3;"></span>
-                        <span class="color-dot" style="background: #E3343A;"></span>
-                    </div>
-                    <p class="product-card__price">От 6 499 000 сум</p>
-                    <p class="product-card__credit">От 541 583 сум/мес</p>
-                </a>
+            <div class="products__grid" id="products-grid">
+                <!-- Товары будут загружены через JavaScript -->
             </div>
         </section>
 
         <!-- НОВАЯ СЕКЦИЯ "ПОЧЕМУ МЫ" -->
         <section class="why-us section">
-            <h2 class="section__title animate-on-scroll">Почему iComfort</h2>
+            <h2 class="section__title animate-on-scroll">Почему BRANDNAME</h2>
             <div class="why-us__container container">
-                <!-- Блок 1 -->
                 <div class="why-us__item animate-on-scroll">
                     <div class="why-us__image-container">
                         <img src="./tradein-og-image-202509-Photoroom.png" alt="Trade-In сервис">
@@ -197,7 +153,6 @@
                         <a href="#" class="link-arrow">Оценить устройство <i class='bx bx-right-arrow-alt'></i></a>
                     </div>
                 </div>
-                <!-- Блок 2 (реверс) -->
                 <div class="why-us__item why-us__item--reversed animate-on-scroll">
                     <div class="why-us__image-container">
                         <img src="https://www.indiaistore.com/themes/frontend/custom/images/trade_in_offers_new2.png"
@@ -223,10 +178,10 @@
                 <div class="footer__column">
                     <h4 class="footer__title">Магазин</h4>
                     <ul class="footer__list">
-                        <li><a href="#" class="footer__link">iPhone</a></li>
-                        <li><a href="#" class="footer__link">Mac</a></li>
-                        <li><a href="#" class="footer__link">iPad</a></li>
-                        <li><a href="#" class="footer__link">Watch</a></li>
+                        <li><a href="catalog.html?category=iphone" class="footer__link">iPhone</a></li>
+                        <li><a href="catalog.html?category=mac" class="footer__link">Mac</a></li>
+                        <li><a href="catalog.html?category=ipad" class="footer__link">iPad</a></li>
+                        <li><a href="catalog.html?category=watch" class="footer__link">Watch</a></li>
                     </ul>
                 </div>
                 <div class="footer__column">
@@ -254,7 +209,7 @@
                 </div>
             </div>
             <div class="footer__bottom">
-                <p class="footer__copy">&copy; 2025 iComfort. Все права защищены.</p>
+                <p class="footer__copy">&copy; 2025 BRANDNAME. Все права защищены.</p>
                 <div class="footer__legal">
                     <a href="#" class="footer__link">Политика конфиденциальности</a>
                     <a href="#" class="footer__link">Условия использования</a>
@@ -268,6 +223,9 @@
         </div>
     </footer>
 
+    <!-- СКРИПТЫ -->
+    <script src="products.js"></script>
+    <script src="cart.js"></script>
     <script src="script.js"></script>
 
 </body>

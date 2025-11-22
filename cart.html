@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина — BRANDNAME</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Шапка -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo"><i class='bx bxl-apple'></i></a>
+            <ul class="nav__menu">
+                <li class="nav__item"><a href="catalog.html?category=iphone" class="nav__link">iPhone</a></li>
+                <li class="nav__item"><a href="catalog.html?category=mac" class="nav__link">Mac</a></li>
+                <li class="nav__item"><a href="catalog.html?category=ipad" class="nav__link">iPad</a></li>
+                <li class="nav__item"><a href="catalog.html?category=watch" class="nav__link">Watch</a></li>
+                <li class="nav__item"><a href="catalog.html?category=airpods" class="nav__link">AirPods</a></li>
+                <li class="nav__item"><a href="catalog.html?category=accessories" class="nav__link">Аксессуары</a></li>
+            </ul>
+            <div class="nav__actions">
+                <i class='bx bx-search nav__icon' id="search-icon"></i>
+                <div class="cart-icon-wrapper">
+                    <i class='bx bx-shopping-bag nav__icon' id="cart-icon"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </div>
+                <i class='bx bx-menu nav__toggle' id="nav-toggle"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="cart-page section container">
+            <h1 class="section__title">Корзина</h1>
+
+            <div class="cart-layout" id="cart-layout">
+                <!-- Пустая корзина -->
+                <div class="cart-empty" id="cart-empty">
+                    <i class='bx bx-shopping-bag'></i>
+                    <h2>Корзина пуста</h2>
+                    <p>Добавьте товары, чтобы оформить заказ</p>
+                    <a href="catalog.html" class="btn btn--primary">Перейти в каталог</a>
+                </div>
+
+                <!-- Содержимое корзины -->
+                <div class="cart-content" id="cart-content" style="display: none;">
+                    <div class="cart-items" id="cart-items">
+                        <!-- Товары будут добавлены через JS -->
+                    </div>
+
+                    <div class="cart-summary">
+                        <h3>Итого</h3>
+                        <div class="summary-row">
+                            <span>Товаров:</span>
+                            <span id="cart-items-count">0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Сумма:</span>
+                            <span id="cart-subtotal">0 сум</span>
+                        </div>
+                        <div class="summary-row summary-row--total">
+                            <span>Итого:</span>
+                            <strong id="cart-total">0 сум</strong>
+                        </div>
+                        <button class="btn btn--primary btn--full" id="checkout-btn">Оформить заказ</button>
+                        <a href="catalog.html" class="btn btn--secondary btn--full">Продолжить покупки</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="footer__container container">
+            <div class="footer__grid">
+                <div class="footer__column">
+                    <h4 class="footer__title">Магазин</h4>
+                    <ul class="footer__list">
+                        <li><a href="catalog.html?category=iphone" class="footer__link">iPhone</a></li>
+                        <li><a href="catalog.html?category=mac" class="footer__link">Mac</a></li>
+                        <li><a href="catalog.html?category=ipad" class="footer__link">iPad</a></li>
+                        <li><a href="catalog.html?category=watch" class="footer__link">Watch</a></li>
+                    </ul>
+                </div>
+                <div class="footer__column">
+                    <h4 class="footer__title">Сервисы</h4>
+                    <ul class="footer__list">
+                        <li><a href="#" class="footer__link">Рассрочка</a></li>
+                        <li><a href="#" class="footer__link">Trade-In</a></li>
+                        <li><a href="#" class="footer__link">Доставка</a></li>
+                    </ul>
+                </div>
+                <div class="footer__column">
+                    <h4 class="footer__title">Поддержка</h4>
+                    <ul class="footer__list">
+                        <li><a href="#" class="footer__link">FAQ</a></li>
+                        <li><a href="#" class="footer__link">Контакты</a></li>
+                        <li><a href="#" class="footer__link">Гарантия</a></li>
+                    </ul>
+                </div>
+                <div class="footer__column">
+                    <h4 class="footer__title">О компании</h4>
+                    <ul class="footer__list">
+                        <li><a href="#" class="footer__link">О нас</a></li>
+                        <li><a href="#" class="footer__link">Вакансии</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p class="footer__copy">&copy; 2025 BRANDNAME. Все права защищены.</p>
+                <div class="footer__legal">
+                    <a href="#" class="footer__link">Политика конфиденциальности</a>
+                    <a href="#" class="footer__link">Условия использования</a>
+                </div>
+                <div class="footer__socials">
+                    <a href="#" class="footer__social-link"><i class='bx bxl-instagram'></i></a>
+                    <a href="#" class="footer__social-link"><i class='bx bxl-telegram'></i></a>
+                    <a href="#" class="footer__social-link"><i class='bx bxl-facebook-square'></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="products.js"></script>
+    <script src="cart.js"></script>
+    <script src="cart-page.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

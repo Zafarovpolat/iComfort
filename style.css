@@ -1,5 +1,3 @@
-/* --- СКОПИРУЙТЕ ВЕСЬ ЭТОТ КОД И ЗАМЕНИТЕ ИМ СУЩЕСТВУЮЩИЙ STYLE.CSS --- */
-
 /* 1. ПЕРЕМЕННЫЕ */
 :root {
     --bg-white: #FFFFFF;
@@ -321,6 +319,10 @@ ul {
     gap: var(--grid-gap);
 }
 
+.catalog .products__grid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
 .product-card {
     background-color: var(--bg-light-gray);
     border-radius: 18px;
@@ -328,6 +330,9 @@ ul {
     text-align: center;
     color: var(--text-dark);
     transition: var(--transition-main);
+    position: relative;
+    /* Для корректного позиционирования ссылки */
+    overflow: hidden;
 }
 
 .product-card:hover {
@@ -344,46 +349,6 @@ ul {
     position: relative;
     height: 200px;
     overflow: hidden;
-}
-
-.product-card__image {
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    position: absolute;
-    height: 100%;
-    transform: scale(2.5);
-}
-
-.product-card__name {
-    font-size: 21px;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.product-card__colors {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-bottom: 1rem;
-}
-
-.color-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.product-card__price {
-    font-size: 17px;
-    font-weight: 600;
-}
-
-.product-card__credit {
-    font-size: 14px;
-    color: var(--text-secondary);
 }
 
 /* 5. НОВАЯ СЕКЦИЯ "ПОЧЕМУ МЫ" */
@@ -494,11 +459,11 @@ ul {
     border-radius: 24px;
     margin-bottom: 1rem;
     overflow: hidden;
-}
-
-.product-gallery__main-image img {
-    transition: opacity 0.3s;
-    scale: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    /* Чтобы не схлопывалось */
 }
 
 .product-info {
@@ -644,16 +609,627 @@ ul {
     transition-delay: 0.2s;
 }
 
-.feature-card:nth-child(2) {
-    transition-delay: 0.1s;
+/* --- ДОПОЛНИТЕЛЬНЫЕ КОМПОНЕНТЫ --- */
+
+/* Корзина в шапке */
+.cart-icon-wrapper {
+    position: relative;
+    cursor: pointer;
 }
 
-.feature-card:nth-child(3) {
-    transition-delay: 0.2s;
+.cart-count {
+    position: absolute;
+    top: -3px;
+    right: -4px;
+    background-color: var(--accent-blue);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: none;
+    /* JS включит flex если > 0 */
+    align-items: center;
+    justify-content: center;
 }
 
-.feature-card:nth-child(4) {
-    transition-delay: 0.3s;
+/* === ПОИСК (ИСПРАВЛЕННЫЙ) === */
+.search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.0);
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-main);
+}
+
+.search-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.search-container {
+    background-color: rgba(255, 255, 255, 1);
+    max-width: 800px;
+    margin: calc(var(--header-height) + 20px) auto 0;
+    border-radius: 24px;
+    padding: 1rem;
+    max-height: calc(100vh - var(--header-height) - 40px);
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: translateY(-20px);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.search-overlay.active .search-container {
+    transform: translateY(0);
+}
+
+.search-input-wrapper {
+    position: relative;
+}
+
+.search-input-wrapper i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    transition: var(--transition-fast);
+}
+
+.search-input-wrapper .bx-search {
+    left: 1.25rem;
+}
+
+.search-close {
+    right: 1.25rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+.search-close:hover {
+    color: var(--text-dark);
+}
+
+.search-input {
+    width: 100%;
+    padding: 1.125rem 3.5rem;
+    font-size: 17px;
+    border: 2px solid transparent;
+    background-color: var(--bg-light-gray);
+    border-radius: 12px;
+    outline: none;
+    transition: var(--transition-fast);
+    font-family: var(--font-main);
+}
+
+.search-input:focus {
+    background-color: var(--bg-white);
+    border-color: var(--accent-blue);
+}
+
+.search-input::placeholder {
+    color: var(--text-secondary);
+}
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    background-color: var(--bg-white);
+    transition: var(--transition-fast);
+    border: 1px solid transparent;
+}
+
+.search-result-item:hover {
+    background-color: var(--bg-light-gray);
+    border-color: var(--border-color);
+    transform: translateY(-2px);
+}
+
+.search-result-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.search-result-info {
+    flex: 1;
+}
+
+.search-result-info h4 {
+    font-size: 17px;
+    margin-bottom: 0.25rem;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.search-result-info p {
+    font-size: 15px;
+    color: var(--accent-blue);
+    font-weight: 500;
+}
+
+.search-empty {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-secondary);
+    font-size: 17px;
+}
+
+.search-empty::before {
+    content: '🔍';
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Анимация появления результатов поиска */
+.search-result-item {
+    animation: slideIn 0.3s ease forwards;
+    opacity: 0;
+}
+
+.search-result-item:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.search-result-item:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.search-result-item:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.search-result-item:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.search-result-item:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Уведомления корзины */
+.cart-notification {
+    position: fixed;
+    top: calc(var(--header-height) + 20px);
+    right: 20px;
+    background-color: rgba(29, 29, 31, 0.9);
+    backdrop-filter: blur(10px);
+    color: var(--text-light);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 1000;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.cart-notification.show {
+    transform: translateX(0);
+}
+
+.cart-notification i {
+    font-size: 1.5rem;
+    color: var(--success-color, #30d158);
+}
+
+/* Каталог и фильтры */
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 14px;
+}
+
+.breadcrumbs a {
+    color: var(--accent-blue);
+}
+
+.breadcrumbs span {
+    color: var(--text-secondary);
+}
+
+.catalog__title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 3rem;
+}
+
+.catalog__layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 3rem;
+}
+
+.catalog__filters {
+    position: sticky;
+    top: calc(var(--header-height) + 20px);
+    height: fit-content;
+}
+
+.filter-group {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-group:last-child {
+    border-bottom: none;
+}
+
+.filter-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.filter-option input[type="radio"] {
+    accent-color: var(--accent-blue);
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.filter-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: var(--font-main);
+}
+
+.catalog__toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.catalog__count {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.no-products {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary);
+}
+
+.no-products i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+/* Страница корзины */
+.cart-page {
+    min-height: 60vh;
+}
+
+.cart-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.cart-empty i {
+    font-size: 5rem;
+    color: var(--text-secondary);
+    opacity: 0.3;
+}
+
+.cart-empty h2 {
+    font-size: 32px;
+}
+
+.cart-empty p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.cart-layout {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cart-content {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 3rem;
+    align-items: start;
+}
+
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto auto auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: var(--bg-light-gray);
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.cart-item__image img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.cart-item__details h3 {
+    font-size: 17px;
+    margin-bottom: 0.5rem;
+}
+
+.cart-item__details p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.cart-item__quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--bg-white);
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.qty-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background-color: var(--bg-light-gray);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+}
+
+.qty-btn:hover {
+    background-color: var(--accent-blue);
+    color: white;
+}
+
+.cart-item__quantity span {
+    min-width: 30px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.cart-item__price {
+    font-size: 17px;
+    font-weight: 600;
+    min-width: 150px;
+    text-align: right;
+}
+
+.cart-item__remove {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: var(--transition-fast);
+}
+
+.cart-item__remove:hover {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.cart-summary {
+    position: sticky;
+    top: calc(var(--header-height) + 20px);
+    background-color: var(--bg-light-gray);
+    padding: 2rem;
+    border-radius: 18px;
+}
+
+.cart-summary h3 {
+    font-size: 21px;
+    margin-bottom: 1.5rem;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 16px;
+}
+
+.summary-row--total {
+    padding-top: 1rem;
+    border-top: 2px solid var(--border-color);
+    margin-top: 1rem;
+    font-size: 21px;
+}
+
+.cart-summary .btn {
+    margin-top: 1.5rem;
+}
+
+.cart-summary .btn--secondary {
+    margin-top: 0.75rem;
+    background-color: transparent;
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+/* === ИСПРАВЛЕНИЕ SCALE ИЗОБРАЖЕНИЙ === */
+
+/* Базовый стиль для изображения карточки */
+.product-card__image {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    /* По умолчанию (для iPhone) */
+    transform: scale(2);
+}
+
+/* Специфические стили для категорий (через data-category) */
+
+/* iPhone */
+.product-card__image[data-category="iphone"] {
+    transform: scale(2.2);
+}
+
+.product-image[data-category="iphone"] {
+    transform: scale(1.5) !important;
+}
+
+/* Mac (Ноутбуки) */
+.product-card__image[data-category="mac"] {
+    transform: scale(1);
+}
+
+.product-image[data-category="mac"] {
+    transform: scale(1) !important;
+}
+
+/* iPad */
+.product-card__image[data-category="ipad"] {
+    transform: scale(0.8);
+}
+
+.product-image[data-category="ipad"] {
+    transform: scale(1.2) !important;
+}
+
+/* Watch */
+.product-card__image[data-category="watch"] {
+    transform: scale(0.8);
+}
+
+.product-image[data-category="watch"] {
+    transform: scale(1.3) !important;
+}
+
+/* AirPods */
+.product-card__image[data-category="airpods"] {
+    transform: scale(1);
+}
+
+.product-image[data-category="airpods"] {
+    transform: scale(1.4) !important;
+}
+
+/* Аксессуары */
+.product-card__image[data-category="accessories"] {
+    transform: scale(1.5);
+}
+
+.product-image[data-category="accessories"] {
+    transform: scale(1.2) !important;
+}
+
+/* Плавная смена изображения на странице товара */
+.product-gallery__main-image img {
+    transition: opacity 0.3s;
+}
+
+@media (max-width: 1280px) {
+    .catalog .products__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .product-card__image[data-category="iphone"] {
+        transform: scale(1.5);
+    }
+
+    .product-card__image[data-category="mac"] {
+        transform: scale(0.9);
+    }
+
+    .product-card__image[data-category="ipad"] {
+        transform: scale(0.5);
+    }
+
+    .product-card__image[data-category="watch"] {
+        transform: scale(0.5);
+    }
+
+    .product-card__image[data-category="airpods"] {
+        transform: scale(0.6);
+    }
+
+    .products__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .product-card:last-child {
+        display: none;
+    }
+
+    .cart-content {
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+    }
 }
 
 /* --- АДАПТИВНОСТЬ --- */
@@ -703,6 +1279,53 @@ ul {
     .product-card__image,
     .why-us__image-container img {
         margin: auto;
+    }
+
+    .product-card:last-child {
+        display: block;
+    }
+
+    .product-card__image[data-category="iphone"] {
+        transform: scale(1.2);
+    }
+
+    .why-us .section__title {
+        margin-bottom: 0;
+    }
+
+    .cart-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .cart-page .section__title {
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 880px) {
+    .catalog .products__grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .product-card__image[data-category="iphone"] {
+        transform: scale(1.1);
+    }
+
+    .product-card__image {
+        margin: 0;
+    }
+
+    .product-card__image[data-category="mac"] {
+        transform: scale(0.8);
+    }
+
+    .product-card__image[data-category="ipad"] {
+        transform: scale(0.4);
+    }
+
+    .product-card__image[data-category="airpods"] {
+        transform: scale(0.5);
     }
 }
 
@@ -760,4 +1383,120 @@ ul {
         flex-direction: column;
         gap: 0.5rem;
     }
+
+    .catalog__layout {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .catalog__filters {
+        position: relative;
+    }
+
+    .catalog__title {
+        margin-bottom: 0rem;
+    }
+
+    .product-card__image[data-category="iphone"] {
+        transform: scale(0.8);
+    }
+
+    .product-card__image[data-category="mac"] {
+        transform: scale(0.6);
+    }
+
+    .product-card__image[data-category="ipad"] {
+        transform: scale(0.25);
+    }
+
+    .product-card__image[data-category="watch"] {
+        transform: scale(0.33);
+    }
+
+    .product-card__image[data-category="airpods"] {
+        transform: scale(0.4);
+    }
+
+    .cart-item {
+        padding: 0.75em;
+        gap: 0.75em;
+    }
 }
+
+@media (max-width: 640px) {
+    .cart-item {
+        gap: 0.5em 0.75em;
+        grid-template-columns: 100px 1fr 1fr;
+    }
+
+    .cart-item__price {
+        grid-column: 1 / 3;
+        justify-content: start;
+        display: flex;
+    }
+
+    .cart-item__remove {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: end;
+        justify-self: end;
+    }
+
+    .cart-item__quantity {
+        justify-self: end;
+    }
+}
+
+@media (max-width: 550px) {
+    .product-card__image[data-category="iphone"] {
+        transform: scale(1.2);
+    }
+
+    .product-card__image[data-category="mac"] {
+        transform: scale(0.7);
+    }
+
+    .product-card__image[data-category="ipad"] {
+        transform: scale(0.4);
+    }
+
+    .product-card__image[data-category="watch"] {
+        transform: scale(0.4);
+    }
+
+    .product-card__image[data-category="airpods"] {
+        transform: scale(0.5);
+    }
+
+    .product-card {
+        padding: 1rem;
+    }
+
+    .cart-item {
+        gap: 0.5em 0.75em;
+        grid-template-columns: 100px 2fr 40px;
+    }
+
+    .cart-item__image {
+        order: 1;
+    }
+
+    .cart-item__details {
+        order: 2;
+    }
+
+    .cart-item__quantity {
+        order: 5;
+    }
+
+    .cart-item__price {
+        order: 4;
+    }
+
+    .cart-item__remove {
+        align-self: start;
+        order: 3;
+    }
+}
+
+@media (max-width: 450px) {}

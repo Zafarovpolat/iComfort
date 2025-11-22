@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Купить iPhone 15 Pro — iComfort</title>
+    <title>Купить iPhone 15 Pro — BRANDNAME</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,19 +21,35 @@
         <nav class="nav container">
             <a href="index.html" class="nav__logo"><i class='bx bxl-apple'></i></a>
             <ul class="nav__menu">
-                <li class="nav__item"><a href="#" class="nav__link">iPhone</a></li>
-                <li class="nav__item"><a href="#" class="nav__link">Mac</a></li>
-                <li class="nav__item"><a href="#" class="nav__link">iPad</a></li>
-                <li class="nav__item"><a href="#" class="nav__link">Watch</a></li>
-                <li class="nav__item"><a href="#" class="nav__link">AirPods</a></li>
-                <li class="nav__item"><a href="#" class="nav__link">Аксессуары</a></li>
+                <li class="nav__item"><a href="catalog.html?category=iphone" class="nav__link">iPhone</a></li>
+                <li class="nav__item"><a href="catalog.html?category=mac" class="nav__link">Mac</a></li>
+                <li class="nav__item"><a href="catalog.html?category=ipad" class="nav__link">iPad</a></li>
+                <li class="nav__item"><a href="catalog.html?category=watch" class="nav__link">Watch</a></li>
+                <li class="nav__item"><a href="catalog.html?category=airpods" class="nav__link">AirPods</a></li>
+                <li class="nav__item"><a href="catalog.html?category=accessories" class="nav__link">Аксессуары</a></li>
             </ul>
             <div class="nav__actions">
-                <i class='bx bx-search nav__icon'></i>
-                <i class='bx bx-shopping-bag nav__icon'></i>
+                <i class='bx bx-search nav__icon' id="search-icon"></i>
+                <div class="cart-icon-wrapper">
+                    <i class='bx bx-shopping-bag nav__icon' id="cart-icon"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </div>
                 <i class='bx bx-menu nav__toggle' id="nav-toggle"></i>
             </div>
         </nav>
+
+        <!-- Поиск -->
+        <div class="search-overlay" id="search-overlay">
+            <div class="search-container container">
+                <div class="search-input-wrapper">
+                    <i class='bx bx-search'></i>
+                    <input type="text" class="search-input" id="search-input" placeholder="Поиск товаров..."
+                        autocomplete="off">
+                    <i class='bx bx-x search-close' id="search-close"></i>
+                </div>
+                <div class="search-results" id="search-results"></div>
+            </div>
+        </div>
     </header>
 
     <main class="main">
@@ -43,7 +59,8 @@
                 <div class="product-gallery">
                     <div class="product-gallery__main-image">
                         <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-naturaltitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692845699233"
-                            alt="iPhone 15 Pro Natural Titanium" id="main-product-image">
+                            alt="iPhone 15 Pro Natural Titanium" id="main-product-image" class="product-image"
+                            data-category="iphone">
                     </div>
                 </div>
 
@@ -95,7 +112,6 @@
                         <button class="btn btn--primary btn--full">Добавить в корзину</button>
                     </div>
 
-                    <!-- ОБНОВЛЕННЫЕ ИКОНКИ -->
                     <ul class="product-info__availability">
                         <li>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -124,21 +140,20 @@
 
                 </div>
             </div>
-            <!-- ... остальные секции страницы товара (характеристики, отзывы) ... -->
         </section>
     </main>
 
-    <!-- ФУТЕР (ДОБАВЛЕН) -->
+    <!-- ФУТЕР -->
     <footer class="footer">
         <div class="footer__container container">
             <div class="footer__grid">
                 <div class="footer__column">
                     <h4 class="footer__title">Магазин</h4>
                     <ul class="footer__list">
-                        <li><a href="#" class="footer__link">iPhone</a></li>
-                        <li><a href="#" class="footer__link">Mac</a></li>
-                        <li><a href="#" class="footer__link">iPad</a></li>
-                        <li><a href="#" class="footer__link">Watch</a></li>
+                        <li><a href="catalog.html?category=iphone" class="footer__link">iPhone</a></li>
+                        <li><a href="catalog.html?category=mac" class="footer__link">Mac</a></li>
+                        <li><a href="catalog.html?category=ipad" class="footer__link">iPad</a></li>
+                        <li><a href="catalog.html?category=watch" class="footer__link">Watch</a></li>
                     </ul>
                 </div>
                 <div class="footer__column">
@@ -166,7 +181,7 @@
                 </div>
             </div>
             <div class="footer__bottom">
-                <p class="footer__copy">&copy; 2024 iComfort. Все права защищены.</p>
+                <p class="footer__copy">&copy; 2025 BRANDNAME. Все права защищены.</p>
                 <div class="footer__legal">
                     <a href="#" class="footer__link">Политика конфиденциальности</a>
                     <a href="#" class="footer__link">Условия использования</a>
@@ -180,6 +195,9 @@
         </div>
     </footer>
 
+    <!-- ВАЖНО: Порядок скриптов! -->
+    <script src="products.js"></script>
+    <script src="cart.js"></script>
     <script src="script.js"></script>
 </body>
 

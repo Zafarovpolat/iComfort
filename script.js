@@ -1,3 +1,4 @@
+// script.js - Обновленная версия
 document.addEventListener('DOMContentLoaded', function () {
 
     // --- Мобильное меню ---
@@ -17,7 +18,132 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // --- Корзина ---
+    const cartIcon = document.getElementById('cart-icon');
+    if (cartIcon) {
+        cartIcon.addEventListener('click', () => {
+            window.location.href = 'cart.html';
+        });
+    }
+
+    // --- Поиск ---
+    const searchIcon = document.getElementById('search-icon');
+    const searchOverlay = document.getElementById('search-overlay');
+    const searchInput = document.getElementById('search-input');
+    const searchClose = document.getElementById('search-close');
+    const searchResults = document.getElementById('search-results');
+
+    if (searchIcon && searchOverlay) {
+        searchIcon.addEventListener('click', () => {
+            searchOverlay.classList.add('active');
+            setTimeout(() => searchInput.focus(), 100);
+        });
+
+        searchClose.addEventListener('click', () => {
+            searchOverlay.classList.remove('active');
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+        });
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+                searchOverlay.classList.remove('active');
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+            }
+        });
+
+        // Закрытие по клику вне области
+        searchOverlay.addEventListener('click', (e) => {
+            if (e.target === searchOverlay) {
+                searchOverlay.classList.remove('active');
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+            }
+        });
+
+        // Живой поиск
+        let searchTimeout;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const query = e.target.value.trim();
+
+            if (query.length < 2) {
+                searchResults.innerHTML = '';
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                const results = searchProducts(query);
+                displaySearchResults(results);
+            }, 300);
+        });
+    }
+
+    function displaySearchResults(results) {
+        if (results.length === 0) {
+            searchResults.innerHTML = '<div class="search-empty">Ничего не найдено</div>';
+            return;
+        }
+
+        searchResults.innerHTML = results.slice(0, 6).map(product => `
+            <a href="product.html?id=${product.id}" class="search-result-item">
+                <img src="${product.images[0]}" alt="${product.name}">
+                <div class="search-result-info">
+                    <h4>${product.name}</h4>
+                    <p>${formatPrice(product.price)}</p>
+                </div>
+            </a>
+        `).join('');
+    }
+
     // --- Анимация при скролле ---
+    initScrollAnimations();
+
+    // --- Загрузка товаров на главной ---
+    const productsGrid = document.getElementById('products-grid');
+    if (productsGrid) {
+        const iphoneProducts = getProductsByCategory('iphone');
+        productsGrid.innerHTML = iphoneProducts.map(product => `
+            <a href="product.html?id=${product.id}" class="product-card animate-on-scroll">
+                <div class="product-card__image-wrapper">
+                    <img src="${product.images[0]}" 
+                         alt="${product.name}" 
+                         class="product-card__image"
+                         data-category="${product.category}">
+                </div>
+                <h3 class="product-card__name">${product.name}</h3>
+                ${product.colors.length > 0 ? `
+                    <div class="product-card__colors">
+                        ${product.colors.slice(0, 4).map(color => `
+                            <span class="color-dot" style="background: ${color.value};"></span>
+                        `).join('')}
+                    </div>
+                ` : ''}
+                <p class="product-card__price">${formatPrice(product.price)}</p>
+                <p class="product-card__credit">От ${formatPrice(product.creditPrice)}/мес</p>
+            </a>
+        `).join('');
+
+        initScrollAnimations();
+    }
+
+    // --- Логика для страницы товара ---
+    if (document.querySelector('.product-page')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        if (productId) {
+            loadProductDetails(productId);
+        } else {
+            window.location.href = 'catalog.html';
+        }
+    }
+});
+
+// Инициализация анимаций скролла
+function initScrollAnimations() {
     const scrollElements = document.querySelectorAll('.animate-on-scroll');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -28,43 +154,117 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }, { threshold: 0.1 });
     scrollElements.forEach(el => observer.observe(el));
+}
 
-    // --- Логика для страницы товара ---
-    if (document.querySelector('.product-page')) {
+// Загрузка деталей товара
+function loadProductDetails(productId) {
+    const product = getProductById(productId);
+    if (!product) {
+        window.location.href = 'catalog.html';
+        return;
+    }
+
+    // Обновить заголовок страницы
+    document.title = `Купить ${product.name} — iComfort`;
+
+    // Обновить изображение
+    const mainImage = document.getElementById('main-product-image');
+    if (mainImage) {
+        mainImage.src = product.images[0];
+        mainImage.setAttribute('data-category', product.category);
+    }
+
+    // Обновить название
+    const titleEl = document.querySelector('.product-info__title');
+    if (titleEl) titleEl.textContent = product.name;
+
+    // Обновить описание
+    const descEl = document.querySelector('.product-info__short-desc');
+    if (descEl) descEl.textContent = product.description;
+
+    // Обновить рейтинг
+    const ratingEl = document.querySelector('.product-info__rating span');
+    if (ratingEl) ratingEl.textContent = `(${product.rating}) ${product.reviewsCount} отзывов`;
+
+    // Обновить цену
+    const priceEl = document.querySelector('.price-main');
+    if (priceEl) priceEl.textContent = formatPrice(product.price);
+
+    const creditEl = document.querySelector('.price-credit');
+    if (creditEl) creditEl.textContent = `или от ${formatPrice(product.creditPrice)}/мес`;
+
+    // Цвета
+    const colorSelector = document.querySelector('.color-selector');
+    const colorLabel = document.querySelector('.option-label span');
+
+    if (colorSelector && product.colors.length > 0) {
+        if (colorLabel) colorLabel.textContent = product.colors[0].name;
+
+        colorSelector.innerHTML = product.colors.map((color, index) => `
+            <div class="color-option ${index === 0 ? 'active' : ''}" 
+                 style="--color-value: ${color.value};"
+                 data-img="${product.images[color.image] || product.images[0]}"
+                 data-color-name="${color.name}"></div>
+        `).join('');
+
+        // Обработчики цветов
         const colorOptions = document.querySelectorAll('.color-option');
-        const mainProductImage = document.getElementById('main-product-image');
         const colorNameSpan = document.querySelector('.option-label span');
 
         colorOptions.forEach(option => {
             option.addEventListener('click', () => {
-                // Смена активного класса
-                document.querySelector('.color-option.active').classList.remove('active');
+                document.querySelector('.color-option.active')?.classList.remove('active');
                 option.classList.add('active');
 
-                // Смена изображения
                 const newImageSrc = option.dataset.img;
-                if (newImageSrc && mainProductImage) {
-                    mainProductImage.style.opacity = '0';
+                if (newImageSrc && mainImage) {
+                    mainImage.style.opacity = '0';
                     setTimeout(() => {
-                        mainProductImage.src = newImageSrc;
-                        mainProductImage.style.opacity = '1';
+                        mainImage.src = newImageSrc;
+                        mainImage.style.opacity = '1';
                     }, 200);
                 }
 
-                // Смена названия цвета
-                const newColorName = option.dataset.colorName;
-                if (newColorName && colorNameSpan) {
-                    colorNameSpan.textContent = newColorName;
+                if (colorNameSpan) {
+                    colorNameSpan.textContent = option.dataset.colorName;
                 }
             });
         });
+    } else {
+        // Скрыть блок выбора цвета если нет цветов
+        const colorOptionsBlock = document.querySelector('.product-options');
+        if (colorOptionsBlock) colorOptionsBlock.style.display = 'none';
+    }
+
+    // Память
+    const textSelector = document.querySelector('.text-selector');
+    if (textSelector && product.storage.length > 0) {
+        textSelector.innerHTML = product.storage.map((storage, index) => `
+            <div class="text-option ${index === 0 ? 'active' : ''}">${storage}</div>
+        `).join('');
 
         const textOptions = document.querySelectorAll('.text-option');
         textOptions.forEach(option => {
             option.addEventListener('click', () => {
-                document.querySelector('.text-option.active').classList.remove('active');
+                document.querySelector('.text-option.active')?.classList.remove('active');
                 option.classList.add('active');
             });
         });
     }
-});
+
+    // Кнопка "Добавить в корзину"
+    const addToCartBtn = document.querySelector('.product-info__actions .btn--primary');
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', () => {
+            const selectedColor = document.querySelector('.color-option.active')?.dataset.colorName || null;
+            const selectedStorage = document.querySelector('.text-option.active')?.textContent || null;
+
+            cart.addItem(productId, selectedColor, selectedStorage);
+        });
+    }
+}
+
+// Форматирование цены
+function formatPrice(price) {
+    return new Intl.NumberFormat('ru-RU').format(price) + ' сум';
+}
