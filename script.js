@@ -1,6 +1,86 @@
 // script.js - Обновленная версия
 document.addEventListener('DOMContentLoaded', function () {
 
+    // global.js (можно добавить в начало script.js)
+
+    // --- 1. Мультиязычность ---
+    const translations = {
+        ru: {
+            iphone: "iPhone", mac: "Mac", ipad: "iPad", watch: "Watch", airpods: "AirPods",
+            buy: "Купить", more: "Подробнее",
+            "cart-title": "Корзина", "checkout": "Оформить",
+            "search-ph": "Поиск товаров...",
+            "installment-title": "Рассрочка", "month": "мес."
+        },
+        uz: {
+            iphone: "iPhone", mac: "Mac", ipad: "iPad", watch: "Watch", airpods: "AirPods",
+            buy: "Sotib olish", more: "Batafsil",
+            "cart-title": "Savatcha", "checkout": "Rasmiylashtirish",
+            "search-ph": "Mahsulotlarni qidirish...",
+            "installment-title": "Muddatli to'lov", "month": "oy"
+        }
+    };
+
+    let currentLang = localStorage.getItem('lang') || 'ru';
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('lang', lang);
+        document.getElementById('lang-toggle').textContent = lang === 'ru' ? 'UZ' : 'RU'; // Показываем на какой переключить
+
+        // Обновляем тексты
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang][key]) {
+                el.textContent = translations[lang][key];
+            }
+        });
+
+        // Обновляем плейсхолдеры
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) searchInput.placeholder = translations[lang]['search-ph'];
+    }
+
+    // --- 2. Темная тема ---
+    const themeToggle = document.getElementById('theme-toggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+
+    if (currentTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        if (themeToggle) themeToggle.classList.replace('bx-moon', 'bx-sun');
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                themeToggle.classList.replace('bx-sun', 'bx-moon');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeToggle.classList.replace('bx-moon', 'bx-sun');
+            }
+        });
+    }
+
+    // --- 3. Переключатель языка ---
+    const langBtn = document.getElementById('lang-toggle');
+    if (langBtn) {
+        langBtn.textContent = currentLang === 'ru' ? 'UZ' : 'RU';
+        langBtn.addEventListener('click', () => {
+            const newLang = currentLang === 'ru' ? 'uz' : 'ru';
+            setLanguage(newLang);
+            location.reload(); // Простая перезагрузка для обновления контента
+        });
+    }
+
+    // Запуск перевода при загрузке
+    document.addEventListener('DOMContentLoaded', () => {
+        setLanguage(currentLang);
+    });
+
     // --- Мобильное меню ---
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.querySelector('.nav__menu');

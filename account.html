@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет — iComfort</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        (function () {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+</head>
+
+<body>
+
+    <!-- ...HEADER... -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo"><i class='bx bxl-apple'></i></a>
+
+            <!-- Меню (скрыто на мобильных) -->
+            <ul class="nav__menu">
+                <li class="nav__item"><a href="catalog.html?category=iphone" class="nav__link"
+                        data-i18n="iphone">iPhone</a></li>
+                <li class="nav__item"><a href="catalog.html?category=mac" class="nav__link" data-i18n="mac">Mac</a></li>
+                <li class="nav__item"><a href="catalog.html?category=ipad" class="nav__link" data-i18n="ipad">iPad</a>
+                </li>
+                <li class="nav__item"><a href="catalog.html?category=watch" class="nav__link"
+                        data-i18n="watch">Watch</a></li>
+                <li class="nav__item"><a href="catalog.html?category=airpods" class="nav__link"
+                        data-i18n="airpods">AirPods</a></li>
+            </ul>
+
+            <!-- Правая часть -->
+            <div class="nav__actions">
+                <!-- Смена языка -->
+                <button class="nav__icon-btn" id="lang-toggle">UZ</button>
+
+                <!-- Смена темы -->
+                <i class='bx bx-moon nav__icon' id="theme-toggle"></i>
+
+                <!-- Поиск -->
+                <i class='bx bx-search nav__icon' id="search-icon"></i>
+
+                <!-- Корзина -->
+                <div class="cart-icon-wrapper">
+                    <i class='bx bx-shopping-bag nav__icon' id="cart-icon"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </div>
+
+                <!-- Профиль (ведет в ЛК или на Логин) -->
+                <a href="account.html" class="nav__icon-link">
+                    <i class='bx bx-user nav__icon'></i>
+                </a>
+
+                <i class='bx bx-menu nav__toggle' id="nav-toggle"></i>
+            </div>
+        </nav>
+
+        <!-- Поиск (оставляем тот же) -->
+        <div class="search-overlay" id="search-overlay">
+            <div class="search-container container">
+                <div class="search-input-wrapper">
+                    <i class='bx bx-search'></i>
+                    <input type="text" class="search-input" id="search-input" placeholder="Поиск..." autocomplete="off">
+                    <i class='bx bx-x search-close' id="search-close"></i>
+                </div>
+                <div class="search-results" id="search-results"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main section container">
+
+        <!-- Блок ВХОДА (показывается если не вошел) -->
+        <div id="login-block" style="max-width: 400px; margin: 50px auto; text-align: center;">
+            <h1 class="section__title" style="margin-bottom: 2rem;">Вход</h1>
+            <form id="login-form" class="checkout-block">
+                <div class="form-group">
+                    <label>Номер телефона</label>
+                    <input type="tel" placeholder="+998" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" placeholder="******" required>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full">Войти</button>
+            </form>
+        </div>
+
+        <!-- Блок КАБИНЕТА (скрыт по умолчанию) -->
+        <div id="profile-block" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h1>Мой кабинет</h1>
+                <button id="logout-btn" class="btn btn--secondary">Выйти</button>
+            </div>
+
+            <div class="checkout-block" style="background: linear-gradient(135deg, #0071e3, #00c6fb); color: white;">
+                <h3>iComfort Бонусы</h3>
+                <div style="font-size: 48px; font-weight: 700; margin: 10px 0;">
+                    <span id="user-points">0</span> B
+                </div>
+                <p>1 Бонус = 1 Сум. Используйте при следующей покупке.</p>
+            </div>
+
+            <h2 style="margin: 2rem 0 1rem;">История заказов</h2>
+            <div id="orders-history">
+                <p style="color: var(--text-secondary);">История заказов пуста</p>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Простая логика ЛК
+        const loginBlock = document.getElementById('login-block');
+        const profileBlock = document.getElementById('profile-block');
+        const loginForm = document.getElementById('login-form');
+        const logoutBtn = document.getElementById('logout-btn');
+        const pointsDisplay = document.getElementById('user-points');
+
+        // Проверка авторизации
+        const isAuth = localStorage.getItem('isAuth');
+        const points = localStorage.getItem('points') || 0;
+
+        if (isAuth) {
+            loginBlock.style.display = 'none';
+            profileBlock.style.display = 'block';
+            pointsDisplay.textContent = new Intl.NumberFormat('ru-RU').format(points);
+        }
+
+        // Вход
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            localStorage.setItem('isAuth', 'true');
+            // Приветственный бонус при первом входе
+            if (!localStorage.getItem('points')) {
+                localStorage.setItem('points', '50000');
+            }
+            location.reload();
+        });
+
+        // Выход
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('isAuth');
+            location.reload();
+        });
+    </script>
+</body>
+
+</html>

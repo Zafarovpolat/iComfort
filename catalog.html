@@ -12,6 +12,15 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <link rel="stylesheet" href="style.css">
+
+    <script>
+        (function () {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 </head>
 
 <body>
@@ -20,30 +29,52 @@
     <header class="header">
         <nav class="nav container">
             <a href="index.html" class="nav__logo"><i class='bx bxl-apple'></i></a>
+
+            <!-- Меню (скрыто на мобильных) -->
             <ul class="nav__menu">
-                <li class="nav__item"><a href="catalog.html?category=iphone" class="nav__link">iPhone</a></li>
-                <li class="nav__item"><a href="catalog.html?category=mac" class="nav__link">Mac</a></li>
-                <li class="nav__item"><a href="catalog.html?category=ipad" class="nav__link">iPad</a></li>
-                <li class="nav__item"><a href="catalog.html?category=watch" class="nav__link">Watch</a></li>
-                <li class="nav__item"><a href="catalog.html?category=airpods" class="nav__link">AirPods</a></li>
-                <li class="nav__item"><a href="catalog.html?category=accessories" class="nav__link">Аксессуары</a></li>
+                <li class="nav__item"><a href="catalog.html?category=iphone" class="nav__link"
+                        data-i18n="iphone">iPhone</a></li>
+                <li class="nav__item"><a href="catalog.html?category=mac" class="nav__link" data-i18n="mac">Mac</a></li>
+                <li class="nav__item"><a href="catalog.html?category=ipad" class="nav__link" data-i18n="ipad">iPad</a>
+                </li>
+                <li class="nav__item"><a href="catalog.html?category=watch" class="nav__link"
+                        data-i18n="watch">Watch</a></li>
+                <li class="nav__item"><a href="catalog.html?category=airpods" class="nav__link"
+                        data-i18n="airpods">AirPods</a></li>
             </ul>
+
+            <!-- Правая часть -->
             <div class="nav__actions">
+                <!-- Смена языка -->
+                <button class="nav__icon-btn" id="lang-toggle">UZ</button>
+
+                <!-- Смена темы -->
+                <i class='bx bx-moon nav__icon' id="theme-toggle"></i>
+
+                <!-- Поиск -->
                 <i class='bx bx-search nav__icon' id="search-icon"></i>
+
+                <!-- Корзина -->
                 <div class="cart-icon-wrapper">
                     <i class='bx bx-shopping-bag nav__icon' id="cart-icon"></i>
                     <span class="cart-count" id="cart-count">0</span>
                 </div>
+
+                <!-- Профиль (ведет в ЛК или на Логин) -->
+                <a href="account.html" class="nav__icon-link">
+                    <i class='bx bx-user nav__icon'></i>
+                </a>
+
                 <i class='bx bx-menu nav__toggle' id="nav-toggle"></i>
             </div>
         </nav>
 
-        <!-- Поиск -->
+        <!-- Поиск (оставляем тот же) -->
         <div class="search-overlay" id="search-overlay">
             <div class="search-container container">
                 <div class="search-input-wrapper">
                     <i class='bx bx-search'></i>
-                    <input type="text" class="search-input" id="search-input" placeholder="Поиск товаров...">
+                    <input type="text" class="search-input" id="search-input" placeholder="Поиск..." autocomplete="off">
                     <i class='bx bx-x search-close' id="search-close"></i>
                 </div>
                 <div class="search-results" id="search-results"></div>

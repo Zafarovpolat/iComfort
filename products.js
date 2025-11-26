@@ -225,3 +225,23 @@ function searchProducts(query) {
         product.shortDesc.toLowerCase().includes(lowerQuery)
     );
 }
+
+// Калькулятор рассрочки
+function calcInstallment(months) {
+    // Обновляем кнопки
+    document.querySelectorAll('.month-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // Получаем цену (очищаем от пробелов и "сум")
+    const priceText = document.querySelector('.price-main').textContent;
+    const price = parseInt(priceText.replace(/\D/g, ''));
+
+    // Считаем
+    const monthly = Math.ceil(price / months);
+
+    // Выводим
+    document.getElementById('monthly-pay').textContent = new Intl.NumberFormat('ru-RU').format(monthly);
+}
+
+// Инициализация калькулятора при загрузке товара
+// (Добавить вызов calcInstallment(3) внутри loadProductDetails)

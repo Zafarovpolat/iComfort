@@ -1,21 +1,31 @@
-/* 1. ПЕРЕМЕННЫЕ */
+/* 1. ПЕРЕМЕННЫЕ (СВЕТЛАЯ ТЕМА - ПО УМОЛЧАНИЮ) */
 :root {
     --bg-white: #FFFFFF;
     --bg-light-gray: #f5f5f7;
-    --bg-black: #000000;
+    --bg-card: #f5f5f7;
     --text-dark: #1d1d1f;
-    --text-light: #f5f5f7;
-    --text-secondary: #6e6e73;
+    --text-secondary: #86868b;
+    --border-color: #d2d2d7;
     --accent-blue: #0071e3;
     --accent-blue-hover: #0077ED;
-    --border-color: #d2d2d7;
-    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-main: 'Inter', sans-serif;
     --header-height: 48px;
     --section-padding: 100px;
     --container-width: 1280px;
-    --grid-gap: 20px;
-    --transition-fast: all 0.2s ease-in-out;
-    --transition-main: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --grid-gap: 30px;
+}
+
+/* ТЕМНАЯ ТЕМА */
+[data-theme="dark"] {
+    --bg-white: #151517;
+    --bg-light-gray: #f5f5f7;
+    --bg-card: #1d1d1f;
+    --text-dark: #f5f5f7;
+    --text-secondary: #86868b;
+    --border-color: #424245;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --grid-gap: 30px;
 }
 
 /* 2. БАЗОВЫЕ СТИЛИ */
@@ -359,7 +369,7 @@ ul {
 .why-us__container {
     display: flex;
     flex-direction: column;
-    gap: 8rem;
+    gap: 6rem;
 }
 
 .why-us__item {
@@ -1913,4 +1923,145 @@ ul {
     .total-final {
         font-size: 18px;
     }
+}
+
+/* Исправление для темной темы */
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.header {
+    background-color: var(--bg-white);
+    /* Убрали прозрачность для простоты в темной теме */
+}
+
+.product-card,
+.feature-card,
+.checkout-block,
+.order-summary-card,
+.cart-item,
+.search-container {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.search-input,
+.form-group input,
+.form-group select,
+.form-group textarea {
+    background-color: var(--bg-white);
+    color: var(--text-dark);
+    border-color: var(--border-color);
+}
+
+/* Калькулятор рассрочки (стили) */
+.installment-calc {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.calc-months {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.month-btn {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+    color: var(--text-dark);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.month-btn.active {
+    background: var(--accent-blue);
+    color: white;
+    border-color: var(--accent-blue);
+}
+
+.calc-result {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.calc-total {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .why-us__item:nth-child(1) {
+    background-color: #1d3153;
+    border-radius: 40px;
+}
+
+[data-theme="dark"] .btn--primary {
+    color: white;
+}
+
+[data-theme="dark"] .btn--secondary {
+    color: white;
+    border: white 1px solid;
+}
+
+[data-theme="dark"] .btn--secondary:hover {
+    background-color: transparent;
+}
+
+[data-theme="dark"] .why-us {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] footer {
+    background-color: var(--bg-white);
+}
+
+[data-theme="dark"] .cart-summary {
+    background-color: var(--bg-card);
+}
+
+[data-theme="dark"] .qty-btn {
+    background-color: var(--bg-card);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .cart-item__remove {
+    background-color: var(--bg-white);
+}
+
+[data-theme="dark"] .delivery-tab input:checked+.tab-content,
+[data-theme="dark"] .pickup-info {
+    background-color: var(--bg-white);
+}
+
+[data-theme="dark"] .filter-select {
+    background-color: var(--bg-card);
+    color: var(--text-dark);
+}
+
+
+.why-us__item {
+    padding: 30px;
+}
+
+.why-us__container {
+    max-width: 95%;
+}
+
+.nav__icon-btn {
+    color: var(--text-dark);
+    font-weight: 500;
+    border: none;
+    background-color: transparent;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    font-size: 17px;
+    cursor: pointer;
 }

@@ -100,6 +100,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         setTimeout(() => {
             // Генерация номера заказа
+
+            // Начисляем 1% кэшбэка
+            const totalText = document.getElementById('checkout-total').textContent;
+            const totalAmount = parseInt(totalText.replace(/\D/g, ''));
+            const cashback = Math.floor(totalAmount * 0.01); // 1%
+
+            let currentPoints = parseInt(localStorage.getItem('points') || '0');
+            localStorage.setItem('points', currentPoints + cashback);
+
+            // ... остальной код ...
+
             const randomOrderNum = Math.floor(10000 + Math.random() * 90000);
             orderNumberSpan.textContent = '#' + randomOrderNum;
 
